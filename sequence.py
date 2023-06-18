@@ -60,7 +60,7 @@ class Sequence:
                     image = image.convert(mode='L')
                 draw = ImageDraw.Draw(image, 'L')
 
-                dets = self.gt_annotations.get_frame(frame_num+1)[:,1:].astype(np.float)
+                dets = self.gt_annotations.get_frame(frame_num+1)[:,1:].astype(np.float32)
                 if len(dets) == 0:
                     if (save_path is not None):
                         image.save(save_path)
@@ -107,7 +107,7 @@ class Sequence:
                         boxcolor = boxColor
                         if d.shape[0]>7 and d[7] == 1:
                             boxcolor = 255 - boxColor
-                        draw.rectangle([d[3], d[4], d[1], d[2]], outline=(boxcolor))#c)
+                        draw.rectangle([d[1], d[2], d[3], d[4]], outline=(boxcolor))#c) # by Jimin
                     #ids.append(d[0])
                     d = d.astype(np.int32)
 
@@ -134,14 +134,14 @@ class Sequence:
                   show_text=True, textColor=0, save_path=None):
         img_path = os.path.join(self.img_dir, self.images[frame_num])
         det_matrix = {
-            'GT': self.gt_annotations.get_frame(frame_num)[:,1:].astype(np.float)
+            'GT': self.gt_annotations.get_frame(frame_num)[:,1:].astype(np.float32)
         }
         colors = {
             'GT': [textColor, boxColor]
         }
         index=1
         for i in self.tracker_res:
-            det_matrix[i] = self.tracker_res[i].get_frame(frame_num)[:,1:].astype(np.float)
+            det_matrix[i] = self.tracker_res[i].get_frame(frame_num)[:,1:].astype(np.float32)
             colors[i] = [COLOR[index], COLOR[index]]
             index+=1
 
@@ -210,7 +210,7 @@ class Sequence:
                             boxcolor = boxColor
                             if d.shape[0]>7 and d[7] == 1:
                                 boxcolor = 255 - boxColor
-                            draw.rectangle([d[3], d[4], d[1], d[2]], outline=(boxcolor))#c)
+                            draw.rectangle([d[1], d[2], d[3], d[4]], outline=(boxcolor))#c) # by jimin
                         #ids.append(d[0])
                         d = d.astype(np.int32)
 
@@ -268,7 +268,7 @@ class Sequence:
 
 
         out.release()
-        print('Written video to', outpath)
+        # print('Written video to', outpath)
 
 
 class SotSequence(Sequence):
