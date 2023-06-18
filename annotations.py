@@ -42,7 +42,7 @@ class Annotations:
         self.filepath = filepath
 
         if not ismat:
-            tracks = pd.read_csv(filepath, header=None).dropna().values.astype(np.int)
+            tracks = pd.read_csv(filepath, header=None).dropna().values.astype(np.int32)
         else:
             tracks = sio.loadmat(filepath)['results']
         if (tracks.shape[1] == 4):
